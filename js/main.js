@@ -7,39 +7,64 @@ for (let color of colors.keys()) {
 	colorG.push({ index: color })
 }
 
-let lo = (x)=>{
-	 console.log(x)
-}
 
+//let stateArr
 
 
 window.onload = function(){
-
+	// lo(cityList.length)
 	var app = new Vue({
 		el:"#app",
 		data:{
 			onC:false,
-			numbList:[]
+			cities:cityList,
+			state:''
 		},
 		methods:{
 			liClick:function (e) {
-				lo(e.target)
-				app.e.target.onC = true
+
+
+			var ajax = new XMLHttpRequest();
+		  ajax.onreadystatechange = function () {
+		      if (ajax.readyState == 4 && ajax.status == 200) {
+		          var res = JSON.parse(ajax.responseText)
+							// app.state.splice(0)
+							// app.state.splice(0,0,res)
+							app.state=res
+		      }
+		  };
+		  ajax.open('post', `https://api.openweathermap.org/data/2.5/weather?id=${e.target.id}&APPID=82161b512fc36f943b2cf28bf4f7df2a`, true);
+		  ajax.send();
 			},
 			addList: function (x) {
 				for (let i = 0; i < x; i++) {
-					app.numbList.splice(10)
-					app.numbList.splice(i, 1, colorG[i])
-					
+
+					app.cities.splice(0,0,colors[i])
+
 				}
+
+			}
+		},
+		computed:{
+			stateList:function(){
+				let weather = this.state.weather
+				if(weather){
+					let weaArr = []
+					for(let [key, value] of Object.entries(weather[0])){
+						weaArr.push(key,value)
+					}
+					return weaArr
+				}
+
+
 			}
 		}
-		
+
 	})
-	
+
 	// app.numbList = colorG
 
-	
-	
+
+
 
 }
