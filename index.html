@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div id="app">
+<button v-on:click="addList(2)">ADD LIST</button>
+		<ul>
+			<li v-for="numb in numbList" :class={liC:onC}  v-on:click="liClick">{{numb}}
+			</li>
+		</ul>
+
+		
+
+
+	</div>
+	
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
