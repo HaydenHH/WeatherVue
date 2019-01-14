@@ -25,5 +25,14 @@ const cityList = [
       "lon": 122.598511,
       "lat": 41.069592
     }
+  },
+   {
+    "id": 1795563,
+    "name": "Shenzhen Shi",
+    "country": "CN",
+    "coord": {
+      "lon": 114.125908,
+      "lat": 22.617661
+    }
   }
 ]

@@ -7,6 +7,7 @@ for (let color of colors.keys()) {
 	colorG.push({ index: color })
 }
 
+[a,b,c] = ['A','B','C']
 
 //let stateArr
 
@@ -18,7 +19,9 @@ window.onload = function(){
 		data:{
 			onC:false,
 			cities:cityList,
-			state:''
+			state:'',
+			nav:[a,b,c],
+			isNavOpen:true
 		},
 		methods:{
 			liClick:function (e) {
@@ -27,36 +30,51 @@ window.onload = function(){
 			var ajax = new XMLHttpRequest();
 		  ajax.onreadystatechange = function () {
 		      if (ajax.readyState == 4 && ajax.status == 200) {
+				//   lo(ajax.responseText)
 		          var res = JSON.parse(ajax.responseText)
-							// app.state.splice(0)
-							// app.state.splice(0,0,res)
 							app.state=res
-		      }
+					
+		    }
 		  };
 		  ajax.open('post', `https://api.openweathermap.org/data/2.5/weather?id=${e.target.id}&APPID=82161b512fc36f943b2cf28bf4f7df2a`, true);
 		  ajax.send();
 			},
-			addList: function (x) {
-				for (let i = 0; i < x; i++) {
-
-					app.cities.splice(0,0,colors[i])
-
-				}
-
+			toggleNav: function (e) {
+				this.isNavOpen =! true
+				
 			}
 		},
 		computed:{
 			stateList:function(){
 				let weather = this.state.weather
+				let wind = this.state.wind
+				let back = []
 				if(weather){
 					let weaArr = []
 					for(let [key, value] of Object.entries(weather[0])){
-						weaArr.push(key,value)
+						weaArr.push({key,value})
+						lo(`${key}: ${value}`)
 					}
-					return weaArr
+					back.push({'天气:':weaArr[1].value},{'描述:':weaArr[2].value})
 				}
 
+				if(wind){
+					let winArr = []
+					for (let [key, value] of Object.entries(wind)) {
+						winArr.push({
+							key,
+							value
+						})
+						lo(`${key}: ${value}`)
+					}
+					back.push({'风速:':winArr[0].value})
+				}
 
+				if(back.length>1){
+					// for(let )
+					lo(Object.keys(back[2]))
+					return back
+				}
 			}
 		}
 
