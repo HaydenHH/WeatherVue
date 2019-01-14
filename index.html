@@ -6,7 +6,8 @@
 	<script src="./js/cityList.js" charset="utf-8"></script>
 	<script src="./js/myTool.js" charset="utf-8"></script>
 	<script src="./js/jquery-3.3.1.js" charset="utf-8"></script>
-	<link rel="stylesheet" href="./css/main.css">
+	<script src="./js/anime.js" charset="utf-8"></script>
+	<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 	<div id="app">
@@ -14,16 +15,15 @@
 		<ul>
 			<li v-for="city in cities"  v-on:click="liClick" :id="city.id" :key="city.id">{{city.name}}</li>
 		</ul>
-		
-		<h1>{{stateList}}</h1>
 
+		<p v-for="info in back" :key="info">{{back}}</p>
 
-		<ul class="noactive" :class="{active:isNavOpen}">
-			<transition-group name="fade" >
-			<li v-for="link in nav" :id="link.id" :key="link.key">{{link}}</li>
-			</transition-group>
+		<ul class="rain">
+			<li v-for="box in grid" :id="box.id" :key="box.id" class="box-in-grid">{{box.holder}}</li>
 		</ul>
-		<button v-on:click="toggleNav">ADD A LINK</button>
+
+
+
 
 	</div>
 
