@@ -1,143 +1,80 @@
-const colors = [
-	'#061E48', '#243360', '#3D4979', '#576193', '#707AAE', '#8B93C9', '#A6AEE5', '#C2C9FF', '#DEE5FF', '#FBFFFF'
-]
+const sizeRange = []
 
-let back = []
-
-
-let colorG = new Array
-for (let color of colors.keys()) {
-	colorG.push({ index: color })
+let setSize = (x,r)=>{
+	for(let i=0;i<x;i++){
+		sizeRange.push(r)
+	}
 }
-
-[a,b,c] = ['A','B','C']
-let grid = new Array()
-
-for(let i=0;i<300;i++){
-	grid.push({'id':i,'holder':''})
-}
-
-
+setSize(1,800)
+setSize(5,500)
+setSize(10,100)
+setSize(50,10)
+setSize(100,5)
+setSize(500,2)
+setSize(1000,1)
 
 
+window.onload=()=>{
+	const w = window.innerWidth
+	const h = window.innerHeight
 
-window.onload = function(){
+	function pt(){
+		 let x = w/2 + [Math.random()*1-Math.random()*1] * w/2
+		 let y = h/2 + [Math.random()*1-Math.random()*1] * h/2
+		 let point = {x,y}
+		 return point
+	}
 
+	function ifNotContact(p1,r1){
+		let existPt = new Array()
+		var isCon = false
+		Array.from(s1.selectAll('.cir')).forEach((c)=>{
+			let x = c.node.getAttribute('cx')
+			let y = c.node.getAttribute('cy')
+			let r = c.node.getAttribute('r')
+			let p2 = {x,y,r}
+			existPt.push(p2)
+		})
 
-	var app = new Vue({
-		el:"#app",
-		data:{
-			onC:false,
-			cities:cityList,
-			state:'',
-			nav:[a,b,c],
-			isNavOpen:true,
-			grid:grid,
-			rain:'rain',
-			back:back
-		},
-		methods:{
-			liClick:function (e) {
+		for(let pt of existPt.values()){
 
+			let d = Math.sqrt((pt.x-p1.x)*(pt.x-p1.x) + (pt.y-p1.y)*(pt.y-p1.y))
 
-				var ajax = new XMLHttpRequest();
-		  	ajax.onreadystatechange = function () {
-		      if (ajax.readyState == 4 && ajax.status == 200) {
-				//   lo(ajax.responseText)
-		          var res = JSON.parse(ajax.responseText)
-							app.state=res
-
-								if(app.state){
-									back.splice(0)
-									let weather = app.state.weather
-									let wind = app.state.wind
-
-									if(weather){
-										let weaArr = []
-										for(let [key, value] of Object.entries(weather[0])){
-											weaArr.push({key,value})
-											lo(`${key}: ${value}`)
-										}
-										back.push({'weather':weaArr[1].value},{'desc':weaArr[2].value})
-									}
-
-									if(wind){
-										let winArr = []
-										for (let [key, value] of Object.entries(wind)) {
-											winArr.push({
-												key,
-												value
-											})
-											lo(`${key}: ${value}`)
-										}
-										back.push({'speed':winArr[0].value})
-									}
-
-									if(back.length>1){
-										// for(let )
-										lo(Object.keys(back[2]))
-										return `${back[0].weather},${back[1].desc},${back[2].speed}`
-									}
-								}
-
-
-		    	}
-		  	};
-		  	ajax.open('post', `https://api.openweathermap.org/data/2.5/weather?id=${e.target.id}&APPID=82161b512fc36f943b2cf28bf4f7df2a`, true);
-		  	ajax.send();
-
-			},
-
-		},
-		computed:{
-			// stateList:function(){
-			// 	let weather = this.state.weather
-			// 	let wind = this.state.wind
-			// 	let back = []
-			// 	if(weather){
-			// 		let weaArr = []
-			// 		for(let [key, value] of Object.entries(weather[0])){
-			// 			weaArr.push({key,value})
-			// 			lo(`${key}: ${value}`)
-			// 		}
-			// 		back.push({'weather':weaArr[1].value},{'desc':weaArr[2].value})
-			// 	}
-			//
-			// 	if(wind){
-			// 		let winArr = []
-			// 		for (let [key, value] of Object.entries(wind)) {
-			// 			winArr.push({
-			// 				key,
-			// 				value
-			// 			})
-			// 			lo(`${key}: ${value}`)
-			// 		}
-			// 		back.push({'speed':winArr[0].value})
-			// 	}
-			//
-			// 	if(back.length>1){
-			// 		// for(let )
-			// 		lo(Object.keys(back[2]))
-			// 		return `${back[0].weather},${back[1].desc},${back[2].speed}`
-			// 	}
-			// }
+			if(parseInt(r1)+parseInt(pt.r) > d){
+				isCon = true
+			}
 		}
 
+		if(isCon){
+			return false
+		}
+
+	}
+
+	let s1 = Snap('#svg1').attr({
+		width:w,
+		height:h
 	})
 
-	// app.numbList = colorG
+	const q = 300
 
-	anime({
-	targets: '.box-in-grid',
-	scale: [
-		{value: .1, easing: 'easeOutSine', duration: 1500},
-		// {value: 1, easing: 'easeInOutQuad', duration: 1200}
-	],
-	rotateY:[
-			{value:'1turn',easing:'linear',duration:anime.stagger(1500, {grid: [16, 5], from: 'center'})}
-	],
-	delay: anime.stagger(200, {grid: [16, 5], from: 'center'})
-	});
+
+	do{
+		let r1 = sizeRange[rNF(sizeRange.length)]
+		let p1 = pt()
+
+		if(ifNotContact(p1,r1) === false){
+
+		}else{
+			s1.paper.circle(p1.x,p1.y,r1).attr({
+						class:'cir'
+			})
+		}
+
+	}while(
+		s1.selectAll('.cir').length < q
+	)
+
 
 
 }
